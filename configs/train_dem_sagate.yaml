@@ -1,0 +1,50 @@
+sup_dataset:
+  dataset:
+    name: rgbdem-folders
+    args:
+      root_path_1: F:\DFC22\labeled_train
+      root_path_2: F:\DFC22\labeled_train
+      cache: in_memory
+  wrapper:
+    name: crop-aug-dem
+    args:
+      repeat_1: 16
+      inp_size: 512
+      flip: False
+      scale: False
+  batch_size: 2
+
+
+model:
+  name: deeplab-sagate
+  args: 
+    backbone: se-resnext-dem
+    num_classes: 15
+    bn_eps: 1.e-5
+    bn_momentum: 1.e-1
+
+dem_input: True
+
+loss_fn:
+  name: ce
+  args:
+    weight: [0, 0.145, 0.233, 3.333, 1.111, 
+    0.125, 0.769, 0.043, 0, 0, 
+    0.053, 0.128, 0.455, 0.5, 1]
+    ignore_index: 0
+
+
+optimizer:
+  name: adam
+  args:
+    lr: 2.5e-5
+
+
+multi_step_lr:
+  milestones: [20, 40, 60, 80]
+  gamma: 0.5
+
+
+epoch_max: 100
+epoch_val: 1
+epoch_save: 20

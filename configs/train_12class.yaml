@@ -1,0 +1,47 @@
+sup_dataset:
+  dataset:
+    name: labeled-folder
+    args:
+      root_path: F:\DFC22\labeled_train
+      cache: in_memory
+  wrapper:
+    name: crop-aug
+    args:
+      repeat_1: 16
+      inp_size: 512
+      flip: False
+      scale: False
+      class_12: True
+  batch_size: 4
+
+
+model:
+  name: deeplab
+  args: 
+    num_classes: 12
+    bn_eps: 1.e-5
+    bn_momentum: 1.e-1
+
+
+loss_fn:
+  name: ce
+  args:
+    weight: 
+    ignore_index: 256
+
+
+optimizer:
+  name: adam
+  args:
+    lr: 5.e-5
+
+
+multi_step_lr:
+  milestones: [20, 40, 60, 80]
+  gamma: 0.5
+
+
+epoch_max: 100
+epoch_val: 1
+epoch_save: 20
+
